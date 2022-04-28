@@ -1,37 +1,65 @@
-## Welcome to GitHub Pages
+<?php
 
-You can use the [editor on GitHub](https://github.com/Bpark16/SDEV265_Group2/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @package  Laravel
+ * @author   Taylor Otwell <taylor@laravel.com>
+ */
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+define('LARAVEL_START', microtime(true));
 
-### Markdown
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| our application. We just need to utilize it! We'll simply require it
+| into the script here so that we don't have to worry about manual
+| loading any of our classes later on. It feels great to relax.
+|
+*/
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+require __DIR__.'/application/vendor/autoload.php';
 
-```markdown
-Syntax highlighted code block
+/*
+|--------------------------------------------------------------------------
+| Turn On The Lights
+|--------------------------------------------------------------------------
+|
+| We need to illuminate PHP development, so let us turn on the lights.
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser and delight our users.
+|
+*/
 
-# Header 1
-## Header 2
-### Header 3
+$app = require_once __DIR__.'/application/bootstrap/app.php';
 
-- Bulleted
-- List
+// set the public path to this directory //
+$app->bind('path.public', function () {
+    return __DIR__;
+});
 
-1. Numbered
-2. List
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request
+| through the kernel, and send the associated response back to
+| the client's browser allowing them to enjoy the creative
+| and wonderful application we have prepared for them.
+|
+*/
 
-**Bold** and _Italic_ and `Code` text
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-[Link](url) and ![Image](src)
-```
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+$response->send();
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Bpark16/SDEV265_Group2/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+$kernel->terminate($request, $response);
