@@ -1,0 +1,2 @@
+SQL file for all of the database. 
+Things that need to be kept on the database: name, username, password, time-clock-hours,  
